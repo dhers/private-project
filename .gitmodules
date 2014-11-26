@@ -1,0 +1,6 @@
+[submodule "private-project"]
+	path = private-project
+	url = https://github.com/dhers/private-project.git
+[submodule "git_test"]
+	path = git_test
+	url = https://github.com/dhers/private-project.git
