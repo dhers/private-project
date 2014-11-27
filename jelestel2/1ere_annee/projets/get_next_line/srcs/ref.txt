@@ -1,8 +1,0 @@
-premiere ligne
-deuxieme ligne
-troisieme ligne
-quatrieme ligne
-cinquieme ligne
-sixieme ligne
-septieme ligne
-derniere ligne
