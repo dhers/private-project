@@ -6,69 +6,79 @@
 /*   By: jelestel <jelestel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/24 16:05:06 by jelestel          #+#    #+#             */
-/*   Updated: 2014/11/26 16:30:23 by jelestel         ###   ########.fr       */
+/*   Updated: 2014/12/07 00:39:26 by jelestel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
 
-t_var		*check col(char ***map)
+char		*ft_realloc(char *s1, char *s2)
 {
-	t_var	*i;
-	int		ref;
+	char	*tmp;
 
-	i = (t_var *)malloc(sizeof(t_var));
-	i->i = 0;
-	ref = 0;
-	while (*map[i->i])
-	{
-		i->j = 0;
-		while (*map[i->i][i->j])
-		{
-			if (ref == 0)
-				ref = i->j;
-			else if (ref != i->j)
-				return (NULL);
-			i->j++;
-		}
-		i->i++;
-	}
-	return (i);
+	tmp = ft_strjoin(s1, s2);
+	free(s1);
+	return (tmp);
 }
 
-int			**parse(char *file)
+t_file		*ft_set_line_fdf(char *line)
+{
+	char	**tmp;
+	t_file	*file;
+	int		i;
+	int		j;
+
+	tmp = ft_strsplit(line, ' ');
+	i = 0;
+	while ((tmp[i]))
+		i++;
+	file = (t_file *)malloc(sizeof(t_file) * i);
+	j = -1;
+	while (tmp[++j])
+	{
+		file[j].cl = i;
+		file[j].z = atoi(tmp[j]);
+	}
+	j = -1;
+	while (tmp[++j])
+		free(tmp[j]);
+	free(tmp);
+	return (file);
+}
+
+t_list		*ft_lstlast(t_list **lst)
+{
+	t_list	*tmp;
+
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+t_list		*parse(char *file)
 {
 	int		fd;
-	int		**tab;
-	char	***map;
 	char	*line;
-	t_var	i;
-	t_var	*j;
+	t_file	*tmp;
+	t_list	*lst;
 
-	map = (char ***)malloc(sizeof(char **));
-	tab = (int **)malloc(sizeof(int *))
-	i.i = 0;
+	fd = open(file, O_RDONLY);
 	line = NULL;
-	fd = open(file);
-	while (get_next_line(fd, &line) == 1)
+	lst = NULL;
+	while (get_next_line(fd, &line))
 	{
-		map[i.i] = ft_strsplit(line);
-		i.i++;
+		tmp = (t_file *)malloc(sizeof(t_file));
+		if (!lst)
+			lst = ft_lstnew(tmp, sizeof(tmp));
+		else
+			ft_lstadd(&lst, ft_lstnew(tmp, sizeof(tmp)));
+		free(tmp);
+		ft_lstlast(&lst)->content = ft_set_line_fdf(line);
 		free(line);
 	}
-	if (!(i.j = check_col(map)))
-		return(NULL);
-	i.i = 0;
-	while (i.i < j->i)
-	{
-		i.j = 0;
-		while (i.j < j->j)
-		{
-			tab[i.i][i.j] = ft_atoi(*map[i.i][i.j]);
-			i.j++;
-		}
-		i.i++;
-	}
-	printf("")
-	return (tab);
+	return (lst);
 }
