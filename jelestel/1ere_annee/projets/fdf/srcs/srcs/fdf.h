@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jelestel <jelestel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/24 16:06:16 by jelestel          #+#    #+#             */
-/*   Updated: 2014/12/08 02:18:41 by jelestel         ###   ########.fr       */
+/*   Created: 2014/11/24 16:05:13 by jelestel          #+#    #+#             */
+/*   Updated: 2014/12/07 00:44:28 by jelestel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-#include <stdio.h>
+#ifndef FDF_H
+# define FDF_H
 
-#define TEST ((t_file * )(lst->content))
+# include "libft.h"
+# include "get_next_line.h"
+# include <stdio.h>
 
-int		main(int ac, char **av)
+typedef struct s_cord	t_cord;
+typedef struct s_file	t_file;
+
+struct		s_file
 {
-	t_list	*lst;
+	int		x;
+	int		y;
+	int		z;
+	int		cl;
+};
 
-	ac--;
-	av++;
-	lst = NULL;
-	if (ac != 0)
-	{
-		if (!(lst = parse(av[0])))
-			return (-1);
-		fdf(&lst);
-	}
-	return (0);
-}
+t_list		*parse(char *file);
+void		fdf(t_list **lst);
+
+#endif
